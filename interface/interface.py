@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import Image
 from PIL import ImageTk
 import interface.videostream
+from recog.recog import Recog
 from database import database
 
 # begin TitanCardScannerApp()
@@ -57,8 +58,8 @@ class TitanCardScannerApp():
         self.PrimaryButtonCanvas.grid(row=3, column=2)
 
         # for now, the following button checks if the person is subscribed to a club
-        self.SignInButton = Button(self.PrimaryButtonCanvas, text='Sign In', command=self.__onClickSignInButton__)
-        self.SignInButton.grid(row=1, column=1)
+        # self.SignInButton = Button(self.PrimaryButtonCanvas, text='Sign In', command=self.__onClickSignInButton__)
+        # self.SignInButton.grid(row=1, column=1)
 
         # self.SubscribeButton = Button(self.PrimaryButtonCanvas, text='Subscribe', command=self.__onClickSubscribeButton__)
         # self.SubscribeButton.grid(row=1, column=1)
@@ -69,9 +70,17 @@ class TitanCardScannerApp():
         self.ClearButton = Button(self.PrimaryButtonCanvas, text='Clear', command=self.__onClickClearButton__)
         self.ClearButton.grid(row=2, column=1)
         
-        # create variables that captures the video stream object and camera frames and display video
+        self.SnapshotButton = Button(self.PrimaryButtonCanvas, text='Snapshot', command=self.__onClickSnapshotButton__)
+        self.SnapshotButton.grid(row=1, column=1)
+        
+        # create variables that:
+        # captures the video stream object
+        # captures the camera frame
+        # captures the recog object
+        self.Recog = Recog()
         self.CameraFrame = None
         self.VideoStream = interface.videostream.videostream(0)
+        # self.VideoStream = interface.videostream.videostream("/Users/Zarg/Documents/Git-Download/TCScanner/VCamera.mov")
         self.displayVideo()
 
         # initialize database connection
@@ -84,6 +93,7 @@ class TitanCardScannerApp():
     # it is called continuously every 15 milliseconds
     def displayVideo(self):
         ok, self.CameraFrame = self.VideoStream.getFrame()
+        self.CameraFrame = self.Recog.getContourFrameForCameraFrame(self.CameraFrame)
 
         if ok:
             self.Image = ImageTk.PhotoImage(image=Image.fromarray(self.CameraFrame))
@@ -127,6 +137,15 @@ class TitanCardScannerApp():
                 self.tcdb.unsubscribePersonFromClub(person)
             else:
                 print(person[0]+" is not subscribed to acmw")
+    
+    # the following method:
+    # tells the video stream object to save a frame to disk
+    # tells the recog object to process "Snapshot.png"
+    # tells the recog object to read any text from "Cutout.png"
+    def __onClickSnapshotButton__(self):
+        self.VideoStream.saveFrame()
+        self.Recog.processContoursForSnapshot()
+        print(self.Recog.readTextFromCutout())
 
     # the following method clears the text in the input fields
     def __onClickClearButton__(self):
