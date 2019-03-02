@@ -7,9 +7,14 @@ An app that scans a CSUF student's Titancard and handles logging attendance auto
 ### Team Lead
 Jacob Powell scoutdude@csu.fullerton.edu
 #### Team Members
-  1. Chris Ahn
-  2. Gustavo Sopena
-  3. Jacob Powell
+  1. Upal Patel
+  2. Chris Ahn
+  3. David Estephanian
+  4. Gustavo Sopena
+  5. HoungHuy Hourt
+  6. Madison Jordan
+  7. Raj Chhatbar
+  8. Tirth Shah
 
 ## Project Technologies
 
