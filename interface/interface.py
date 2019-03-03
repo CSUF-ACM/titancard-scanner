@@ -8,10 +8,10 @@ except ImportError:
     from Tkinter import *
 
 try:
-    imp.find_module('interface.videostream')
-    import interface.videostream as videostream
+    imp.find_module('videostream')
+    import videostream
 except ImportError:
-    import interface.videostream as videostream
+	import interface.videostream as videostream
 
 
 #end compatability block
