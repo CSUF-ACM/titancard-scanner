@@ -11,7 +11,7 @@ try:
     imp.find_module('interface.videostream')
     import interface.videostream as videostream
 except ImportError:
-    import videostream
+    import interface.videostream as videostream
 
 
 #end compatability block
