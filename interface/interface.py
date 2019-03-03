@@ -1,5 +1,4 @@
 import imp
-
 #Cross platform compatability
 
 try:
@@ -13,7 +12,7 @@ except ImportError:
 
 from PIL import Image
 from PIL import ImageTk
-import videostream
+import interface.videostream as videostream
 from recog.recog import Recog
 from database import database
 
