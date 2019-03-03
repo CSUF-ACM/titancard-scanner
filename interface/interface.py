@@ -7,12 +7,18 @@ try:
 except ImportError:
     from Tkinter import *
 
+try:
+    imp.find_module('interface.videostream')
+    import interface.videostream as videostream
+except ImportError:
+    import videostream
+
+
 #end compatability block
 
 
 from PIL import Image
 from PIL import ImageTk
-import interface.videostream as videostream
 from recog.recog import Recog
 from database import database
 
