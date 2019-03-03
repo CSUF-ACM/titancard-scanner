@@ -1,4 +1,7 @@
 import imp
+import sys
+
+print (sys.path)
 #Cross platform compatability
 
 try:
@@ -11,8 +14,10 @@ try:
     imp.find_module('videostream')
     import videostream
 except ImportError:
-	import interface.videostream as videostream
-
+	try:
+		from videostream import videostream
+	except ImportError:
+		from interface.videostream import videostream
 
 #end compatability block
 
@@ -96,7 +101,7 @@ class TitanCardScannerApp():
         # captures the recog object
         self.Recog = Recog()
         self.CameraFrame = None
-        self.VideoStream = videostream.videostream(0)
+        self.VideoStream = videostream(0)
         self.displayVideo()
 
         # initialize database connection
