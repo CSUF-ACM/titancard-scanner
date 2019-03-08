@@ -23,8 +23,8 @@ class Recog():
         canvas = np.zeros_like(snapshotCopy)
 
         # define the center rectangle
-        x0 = round(1280*0.31)
-        y0 = round(720*0.3)
+        x0 = int(round(1280*0.31))
+        y0 = int(round(720*0.3))
         w0 = 484
         h0 = 285
 
@@ -54,7 +54,7 @@ class Recog():
         cv2.imwrite("Cropped.png", cropped)
 
         # crop snapshot to center rectangle
-        cutout = snapshot[y0:y0+h0, x0:x0+w0]
+        cutout = snapshot[int(y0):int(y0+h0), int(x0):int(x0+w0)]
         cv2.imwrite("Cutout.png", cutout)
 
         secondContours = self.findContourDataForImageFrame(cropped)
@@ -102,8 +102,8 @@ class Recog():
     # the following method adds the contours to the given frame
     def getContourFrameForCameraFrame(self, frame):
         # define the center rectangle
-        x0 = round(1280*0.31)
-        y0 = round(720*0.3)
+        x0 = int(round(1280*0.31))
+        y0 = int(round(720*0.3))
         w0 = 484
         h0 = 285
 
