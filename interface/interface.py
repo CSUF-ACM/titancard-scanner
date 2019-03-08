@@ -1,7 +1,26 @@
+import imp
+import sys
+
+# Cross Platform Compatability Block
+try:
+    imp.find_module('tkinter')
+    from tkinter import *
+except ImportError:
+    from Tkinter import *
+
+try:
+    imp.find_module('videostream')
+    import videostream
+except ImportError:
+    try:
+        from videostream import videostream
+    except ImportError:
+        from interface.videostream import videostream
+# End Compatability Block
+
 from tkinter import *
 from PIL import Image
 from PIL import ImageTk
-import interface.videostream
 from recog.recog import Recog
 from database import database
 
@@ -76,7 +95,7 @@ class TitanCardScannerApp():
         # captures the recog object
         self.Recog = Recog()
         self.CameraFrame = None
-        self.VideoStream = interface.videostream.videostream(0)
+        self.VideoStream = videostream(0)
         self.displayVideo()
 
         # initialize database connection
