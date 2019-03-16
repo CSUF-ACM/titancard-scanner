@@ -18,7 +18,6 @@ except ImportError:
         from interface.videostream import videostream
 # End Compatability Block
 
-from tkinter import *
 from PIL import Image
 from PIL import ImageTk
 from recog.recog import Recog
@@ -45,7 +44,7 @@ class TitanCardScannerApp():
         # create a container to hold name label and input field
         self.NameCanvas = Canvas(self.InfoCanvas, width=20, height=5, highlightthickness=0, relief='ridge')
         self.NameCanvas.grid(row=1, column=1)
-        
+
         self.FirstNameLabel = Label(self.NameCanvas, text="Name")
         self.FirstNameLabel.grid(row=1, column=1)
 
@@ -55,7 +54,7 @@ class TitanCardScannerApp():
         # create a container to hold id card label and input field
         self.TitanCardCanvas = Canvas(self.InfoCanvas, width=20, height=5, highlightthickness=0, relief='ridge')
         self.TitanCardCanvas.grid(row=1, column=2)
-        
+
         self.TitanCardLabel = Label(self.TitanCardCanvas, text="CWID")
         self.TitanCardLabel.grid(row=1, column=1)
 
@@ -65,7 +64,7 @@ class TitanCardScannerApp():
         # create a container to hold email label and input field
         self.EmailCanvas = Canvas(self.InfoCanvas, width=20, height=5, highlightthickness=0, relief='ridge')
         self.EmailCanvas.grid(row=1, column=3)
-        
+
         self.EmailLabel = Label(self.EmailCanvas, text="Email")
         self.EmailLabel.grid(row=1, column=1)
 
@@ -88,7 +87,7 @@ class TitanCardScannerApp():
 
         self.ClearButton = Button(self.PrimaryButtonCanvas, text='Clear', command=self.__onClickClearButton__)
         self.ClearButton.grid(row=2, column=1)
-        
+
         # create variables that:
         # captures the video stream object
         # captures the camera frame
@@ -103,7 +102,7 @@ class TitanCardScannerApp():
 
         # display main app window
         self.AppWindow.mainloop()
-    
+
     # the following method displays the video obtained from the video stream object
     # it is called continuously every 15 milliseconds
     def displayVideo(self):
@@ -122,6 +121,7 @@ class TitanCardScannerApp():
     # tells the recog object to process "Snapshot.png"
     # tells the recog object to read any text from "Cutout.png"
     # otherwise: checks if the person specified in the entry fields is subscribed to a club
+    
     def __onClickSignInButton__(self):
         name = self.FirstNameEntryView.get()
         cwid = self.TitanCardEntryView.get()

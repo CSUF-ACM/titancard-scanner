@@ -6,7 +6,7 @@ class TCDB():
     def __init__(self):
         self.mConnection = sqlite3.connect("database/csuf-tcscanner.db")
         self.cursor = self.mConnection.cursor()
-
+        
         self.createTableWithName("acm")
         self.createTableWithName("acmsignin")
 

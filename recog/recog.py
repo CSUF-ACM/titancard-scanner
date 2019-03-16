@@ -17,6 +17,7 @@ class Recog():
         snapshot = Image.open("Core-Snapshot.png")
         snapshot.save("Core-Snapshot.png", dpi=(300,300))
         snapshot = cv2.imread("Core-Snapshot.png")
+
         snapshotCopy = snapshot.copy()
 
         # create a blank canvas
@@ -75,11 +76,11 @@ class Recog():
         
         # obtain the largest perimeter
         perimeterMax = max(perimeters)
-
         # get the bounding rectangle for the contour with maximum perimeter
         # draw the bounding rectangle onto the cropped canvas in green
         # draw the bounding rectangle onto the cutout image in green
         x, y, w, h = boundingRectangles.pop(perimeterMax)
+
         cv2.rectangle(cropped, (x, y), (x+w, y+h), (0, 255, 0), 3)
         cv2.rectangle(cutout, (x, y), (x+w, y+h), (0, 255, 0), 3)
         cv2.imwrite("Cropped.png", cropped)
