@@ -1,9 +1,7 @@
 import imp
 import sys
 
-print (sys.path)
-#Cross platform compatability
-
+# Cross Platform Compatability Block
 try:
     imp.find_module('tkinter')
     from tkinter import *
@@ -14,13 +12,11 @@ try:
     imp.find_module('videostream')
     import videostream
 except ImportError:
-	try:
-		from videostream import videostream
-	except ImportError:
-		from interface.videostream import videostream
-
-#end compatability block
-
+    try:
+        from videostream import videostream
+    except ImportError:
+        from interface.videostream import videostream
+# End Compatability Block
 
 from PIL import Image
 from PIL import ImageTk
@@ -80,8 +76,8 @@ class TitanCardScannerApp():
         self.PrimaryButtonCanvas.grid(row=3, column=2)
 
         # for now, the following button checks if the person is subscribed to a club
-        # self.SignInButton = Button(self.PrimaryButtonCanvas, text='Sign In', command=self.__onClickSignInButton__)
-        # self.SignInButton.grid(row=1, column=1)
+        self.SignInButton = Button(self.PrimaryButtonCanvas, text='Sign In', command=self.__onClickSignInButton__)
+        self.SignInButton.grid(row=1, column=1)
 
         # self.SubscribeButton = Button(self.PrimaryButtonCanvas, text='Subscribe', command=self.__onClickSubscribeButton__)
         # self.SubscribeButton.grid(row=1, column=1)
@@ -91,9 +87,6 @@ class TitanCardScannerApp():
 
         self.ClearButton = Button(self.PrimaryButtonCanvas, text='Clear', command=self.__onClickClearButton__)
         self.ClearButton.grid(row=2, column=1)
-
-        self.SnapshotButton = Button(self.PrimaryButtonCanvas, text='Snapshot', command=self.__onClickSnapshotButton__)
-        self.SnapshotButton.grid(row=1, column=1)
 
         # create variables that:
         # captures the video stream object
@@ -119,10 +112,16 @@ class TitanCardScannerApp():
         if ok:
             self.Image = ImageTk.PhotoImage(image=Image.fromarray(self.CameraFrame))
             self.VideoCanvas.create_image(250,150,image=self.Image,anchor='center')
-
+        
         self.CallID = self.AppWindow.after(15, self.displayVideo)
 
-    # the following method checks if the person specified in the entry fields is subscribed to a club
+    # the following method:
+    # checks if the input fields are empty, and if so:
+    # tells the video stream object to save a frame to disk
+    # tells the recog object to process "Snapshot.png"
+    # tells the recog object to read any text from "Cutout.png"
+    # otherwise: checks if the person specified in the entry fields is subscribed to a club
+    
     def __onClickSignInButton__(self):
         name = self.FirstNameEntryView.get()
         cwid = self.TitanCardEntryView.get()
@@ -130,23 +129,27 @@ class TitanCardScannerApp():
         person = (name, '0', cwid, email)
         if self.__isValidEntry__(person):
             if self.tcdb.isPersonSubscribedToClub(person):
-                print(person[0]+" is subscribed to acmw")
+                print(person[0]+" is subscribed to acm")
             else:
-                print(person[0]+" is not subscribed to acmw")
-
+                print(person[0]+" is not subscribed to acm")
+        else:
+            self.VideoStream.saveFrame()
+            self.Recog.processContoursForSnapshot()
+            print(self.Recog.readTextFromCutout())
+    
     # the following method adds the person specified in the entry fields to the specified club
-    # for now, the only club will be 'acmw'
+    # for now, the only club will be 'acm'
     def __onClickSubscribeButton__(self):
         name = self.FirstNameEntryView.get()
         cwid = self.TitanCardEntryView.get()
         email = self.EmailLabelEntryView.get()
         person = (name, '0', cwid, email)
         if self.__isValidEntry__(person):
-            print(person[0]+" has subscribed to acmw")
+            print(person[0]+" has subscribed to acm")
             self.tcdb.subscribePersonToClub(person)
-
+    
     # the following method removes the person specified in the entry fields from the specified club
-    # for now, the only club will be 'acmw'
+    # for now, the only club will be 'acm'
     def __onClickUnsubscribeButton__(self):
         name = self.FirstNameEntryView.get()
         cwid = self.TitanCardEntryView.get()
@@ -154,39 +157,30 @@ class TitanCardScannerApp():
         person = (name, '0', cwid, email)
         if self.__isValidEntry__(person):
             if self.tcdb.isPersonSubscribedToClub(person):
-                print(person[0]+" has unsubscribed from acmw")
+                print(person[0]+" has unsubscribed from acm")
                 self.tcdb.unsubscribePersonFromClub(person)
             else:
-                print(person[0]+" is not subscribed to acmw")
-
-    # the following method:
-    # tells the video stream object to save a frame to disk
-    # tells the recog object to process "Snapshot.png"
-    # tells the recog object to read any text from "Cutout.png"
-    def __onClickSnapshotButton__(self):
-        self.VideoStream.saveFrame()
-        self.Recog.processContoursForSnapshot()
-        print(self.Recog.readTextFromCutout())
+                print(person[0]+" is not subscribed to acm")
 
     # the following method clears the text in the input fields
     def __onClickClearButton__(self):
         self.FirstNameEntryView.delete(0,20)
         self.TitanCardEntryView.delete(0,10)
         self.EmailLabelEntryView.delete(0,20)
-
+    
     # the following method determines if the person tuple does not contain empty strings
     def __isValidEntry__(self, person):
         if person[0] == '':
-            print("Invalid Name Entry")
+            # print("Invalid Name Entry")
             return False
         if person[2] == '':
-            print("Invalid CWID Entry")
+            # print("Invalid CWID Entry")
             return False
         if person[3] == '':
-            print("Invalid Email Entry")
+            # print("Invalid Email Entry")
             return False
         return True
-
+    
     # the following method stops the video stream and closes the application
     def __onCloseWindow__(self):
         print("Stopping Video... Done")

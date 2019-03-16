@@ -28,6 +28,12 @@ class videostream:
         _, frame = self.VideoConnection.read()
         cv2.imwrite("Snapshot.png", frame)
 
+    # the following method saves a frame from the video as a png image (no contours)
+    def saveFrame(self):
+        print("Saving Snapshot... Done")
+        _, frame = self.VideoConnection.read()
+        cv2.imwrite("Core-Snapshot.png", frame)
+
     # the following method disconnects from the video source
     def release(self):
         if self.VideoConnection.isOpened():
